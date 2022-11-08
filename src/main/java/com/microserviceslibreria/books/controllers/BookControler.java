@@ -3,8 +3,10 @@ package com.microserviceslibreria.books.controllers;
 import com.microserviceslibreria.books.models.BooksModel;
 import com.microserviceslibreria.books.services.BookServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 
 @RestController
@@ -16,6 +18,7 @@ public class BookControler {
 
     @CrossOrigin
     @GetMapping("/all")
+    @RolesAllowed({"product_read"})
     public ArrayList<BooksModel> getAllBooks(){
         return bookServices.getAllBooks();
     }
@@ -25,5 +28,10 @@ public class BookControler {
         return this.bookServices.saveBook(book);
     }
 
+
+    @PostMapping("/bookdel/{id}")
+    public void deleteBook(@PathVariable("id") Long id){
+          this.bookServices.deleteBook(id);
+    }
 
 }
